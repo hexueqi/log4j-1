@@ -765,15 +765,16 @@ public class DOMConfigurator implements Configurator {
               uConn.setUseCaches(false);
               InputStream stream = uConn.getInputStream();
               try {
-                InputSource src = new InputSource(stream);
-                src.setSystemId(url.toString());
-                return parser.parse(src);
+                  InputSource src = new InputSource(stream);
+                  src.setSystemId(url.toString());
+                  return parser.parse(src);
               } finally {
-                stream.close();
+                  stream.close();
               }
           }
-          public String toString() { 
-              return "url [" + url.toString() + "]"; 
+
+          public String toString() {
+              return "url [" + url.toString() + "]";
           }
       };
       doConfigure(action, repository);
