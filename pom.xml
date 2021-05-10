@@ -470,6 +470,14 @@ target platform and specify -Dntdll_target=msbuild on the mvn command line.
           </execution>
         </executions>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <source>5</source>
+                <target>5</target>
+            </configuration>
+        </plugin>
     </plugins>
     <testSourceDirectory>tests/src/java</testSourceDirectory>
     <testResources>
