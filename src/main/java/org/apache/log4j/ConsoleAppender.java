@@ -31,131 +31,126 @@ import org.apache.log4j.helpers.LogLog;
   * @since 1.1 */
 public class ConsoleAppender extends WriterAppender {
 
-  public static final String SYSTEM_OUT = "System.out";
-  public static final String SYSTEM_ERR = "System.err";
+    public static final String SYSTEM_OUT = "System.out";
+    public static final String SYSTEM_ERR = "System.err";
 
-  protected String target = SYSTEM_OUT;
+    protected String           target     = SYSTEM_OUT;
 
-  /**
-   *  Determines if the appender honors reassignments of System.out
-   *  or System.err made after configuration.
-   */
-  private boolean follow = false;
+    /**
+     *  Determines if the appender honors reassignments of System.out
+     *  or System.err made after configuration.
+     */
+    private boolean            follow     = false;
 
-  /**
+    /**
     * Constructs an unconfigured appender.
     */
-  public ConsoleAppender() {
-  }
+    public ConsoleAppender() {
+    }
 
     /**
      * Creates a configured appender.
      *
      * @param layout layout, may not be null.
      */
-  public ConsoleAppender(Layout layout) {
-    this(layout, SYSTEM_OUT);
-  }
+    public ConsoleAppender(Layout layout) {
+        this(layout, SYSTEM_OUT);
+    }
 
     /**
      *   Creates a configured appender.
      * @param layout layout, may not be null.
      * @param target target, either "System.err" or "System.out".
      */
-  public ConsoleAppender(Layout layout, String target) {
-    setLayout(layout);
-    setTarget(target);
-    activateOptions();
-  }
-
-  /**
-   *  Sets the value of the <b>Target</b> option. Recognized values
-   *  are "System.out" and "System.err". Any other value will be
-   *  ignored.  
-   * */
-  public
-  void setTarget(String value) {
-    String v = value.trim();
-
-    if (SYSTEM_OUT.equalsIgnoreCase(v)) {
-      target = SYSTEM_OUT;
-    } else if (SYSTEM_ERR.equalsIgnoreCase(v)) {
-      target = SYSTEM_ERR;
-    } else {
-      targetWarn(value);
+    public ConsoleAppender(Layout layout, String target) {
+        setLayout(layout);
+        setTarget(target);
+        activateOptions();
     }
-  }
 
-  /**
-   * Returns the current value of the <b>Target</b> property. The
-   * default value of the option is "System.out".
-   *
-   * See also {@link #setTarget}.
-   * */
-  public
-  String getTarget() {
-    return target;
-  }
-  
-  /**
-   *  Sets whether the appender honors reassignments of System.out
-   *  or System.err made after configuration.
-   *  @param newValue if true, appender will use value of System.out or
-   *  System.err in force at the time when logging events are appended.
-   *  @since 1.2.13
-   */
-  public final void setFollow(final boolean newValue) {
-     follow = newValue;
-  }
-  
-  /**
-   *  Gets whether the appender honors reassignments of System.out
-   *  or System.err made after configuration.
-   *  @return true if appender will use value of System.out or
-   *  System.err in force at the time when logging events are appended.
-   *  @since 1.2.13
-   */
-  public final boolean getFollow() {
-      return follow;
-  }
+    /**
+     *  Sets the value of the <b>Target</b> option. Recognized values
+     *  are "System.out" and "System.err". Any other value will be
+     *  ignored.  
+     * */
+    public void setTarget(String value) {
+        String v = value.trim();
 
-  void targetWarn(String val) {
-    LogLog.warn("["+val+"] should be System.out or System.err.");
-    LogLog.warn("Using previously set target, System.out by default.");
-  }
+        if (SYSTEM_OUT.equalsIgnoreCase(v)) {
+            target = SYSTEM_OUT;
+        } else if (SYSTEM_ERR.equalsIgnoreCase(v)) {
+            target = SYSTEM_ERR;
+        } else {
+            targetWarn(value);
+        }
+    }
 
-  /**
+    /**
+     * Returns the current value of the <b>Target</b> property. The
+     * default value of the option is "System.out".
+     *
+     * See also {@link #setTarget}.
+     * */
+    public String getTarget() {
+        return target;
+    }
+
+    /**
+     *  Sets whether the appender honors reassignments of System.out
+     *  or System.err made after configuration.
+     *  @param newValue if true, appender will use value of System.out or
+     *  System.err in force at the time when logging events are appended.
+     *  @since 1.2.13
+     */
+    public final void setFollow(final boolean newValue) {
+        follow = newValue;
+    }
+
+    /**
+     *  Gets whether the appender honors reassignments of System.out
+     *  or System.err made after configuration.
+     *  @return true if appender will use value of System.out or
+     *  System.err in force at the time when logging events are appended.
+     *  @since 1.2.13
+     */
+    public final boolean getFollow() {
+        return follow;
+    }
+
+    void targetWarn(String val) {
+        LogLog.warn("[" + val + "] should be System.out or System.err.");
+        LogLog.warn("Using previously set target, System.out by default.");
+    }
+
+    /**
     *   Prepares the appender for use.
     */
-   public void activateOptions() {
+    public void activateOptions() {
         if (follow) {
             if (target.equals(SYSTEM_ERR)) {
-               setWriter(createWriter(new SystemErrStream()));
+                setWriter(createWriter(new SystemErrStream()));
             } else {
-               setWriter(createWriter(new SystemOutStream()));
+                setWriter(createWriter(new SystemOutStream()));
             }
         } else {
             if (target.equals(SYSTEM_ERR)) {
-               setWriter(createWriter(System.err));
+                setWriter(createWriter(System.err));
             } else {
-               setWriter(createWriter(System.out));
+                setWriter(createWriter(System.out));
             }
         }
 
         super.activateOptions();
-  }
-  
-  /**
-   *  {@inheritDoc}
-   */
-  protected
-  final
-  void closeWriter() {
-     if (follow) {
-        super.closeWriter();
-     }
-  }
-  
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    protected final void closeWriter() {
+        if (follow) {
+            super.closeWriter();
+        }
+    }
 
     /**
      * An implementation of OutputStream that redirects to the
@@ -177,8 +172,7 @@ public class ConsoleAppender extends WriterAppender {
             System.err.write(b);
         }
 
-        public void write(final byte[] b, final int off, final int len)
-            throws IOException {
+        public void write(final byte[] b, final int off, final int len) throws IOException {
             System.err.write(b, off, len);
         }
 
@@ -207,8 +201,7 @@ public class ConsoleAppender extends WriterAppender {
             System.out.write(b);
         }
 
-        public void write(final byte[] b, final int off, final int len)
-            throws IOException {
+        public void write(final byte[] b, final int off, final int len) throws IOException {
             System.out.write(b, off, len);
         }
 

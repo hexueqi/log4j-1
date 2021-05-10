@@ -22,7 +22,6 @@ import java.io.FilterWriter;
 import org.apache.log4j.spi.ErrorHandler;
 import org.apache.log4j.spi.ErrorCode;
 
-
 /**
    QuietWriter does not throw exceptions when things go
    wrong. Instead, it delegates error handling to its {@link ErrorHandler}. 
@@ -33,44 +32,37 @@ import org.apache.log4j.spi.ErrorCode;
 */
 public class QuietWriter extends FilterWriter {
 
-  protected ErrorHandler errorHandler;
+    protected ErrorHandler errorHandler;
 
-  public
-  QuietWriter(Writer writer, ErrorHandler errorHandler) {
-    super(writer);
-    setErrorHandler(errorHandler);
-  }
-
-  public
-  void write(String string) {
-    if (string != null) {
-    	try {
-      		out.write(string);
-    	} catch(Exception e) {
-      		errorHandler.error("Failed to write ["+string+"].", e, 
-			 	ErrorCode.WRITE_FAILURE);
-	    }
+    public QuietWriter(Writer writer, ErrorHandler errorHandler) {
+        super(writer);
+        setErrorHandler(errorHandler);
     }
-  }
 
-  public
-  void flush() {
-    try {
-      out.flush();
-    } catch(Exception e) {
-      errorHandler.error("Failed to flush writer,", e, 
-			 ErrorCode.FLUSH_FAILURE);
-    }	
-  }
-
-
-  public
-  void setErrorHandler(ErrorHandler eh) {
-    if(eh == null) {
-      // This is a programming error on the part of the enclosing appender.
-      throw new IllegalArgumentException("Attempted to set null ErrorHandler.");
-    } else { 
-      this.errorHandler = eh;
+    public void write(String string) {
+        if (string != null) {
+            try {
+                out.write(string);
+            } catch (Exception e) {
+                errorHandler.error("Failed to write [" + string + "].", e, ErrorCode.WRITE_FAILURE);
+            }
+        }
     }
-  }
+
+    public void flush() {
+        try {
+            out.flush();
+        } catch (Exception e) {
+            errorHandler.error("Failed to flush writer,", e, ErrorCode.FLUSH_FAILURE);
+        }
+    }
+
+    public void setErrorHandler(ErrorHandler eh) {
+        if (eh == null) {
+            // This is a programming error on the part of the enclosing appender.
+            throw new IllegalArgumentException("Attempted to set null ErrorHandler.");
+        } else {
+            this.errorHandler = eh;
+        }
+    }
 }
