@@ -139,7 +139,7 @@ class HUPNode implements Runnable {
     DataOutputStream             dos;
     ExternallyRolledFileAppender er;
 
-    public HUPNode(Socket socket, ExternallyRolledFileAppender er) {
+    public  HUPNode(Socket socket, ExternallyRolledFileAppender er) {
         this.socket = socket;
         this.er = er;
         try {
